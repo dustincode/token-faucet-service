@@ -29,7 +29,7 @@ exports.faucet = async (token, network, address) => {
   const nonce = await web3.eth.getTransactionCount(ownerAddress, 'pending');
   const contract = getContract(getContractAddress(token, network));
   const decimals = await contract.methods.decimals().call();
-  const amount = toWei(20, decimals);
+  const amount = toWei(50, decimals);
 
   const gasPrice = await web3.eth.getGasPrice();
   const gasLimit = await web3.eth.estimateGas({
@@ -44,8 +44,8 @@ exports.faucet = async (token, network, address) => {
     to: getContractAddress(token, network),
     value: 0x0,
     nonce: web3.utils.toHex(nonce),
-    gasPrice: web3.utils.toHex(gasPrice),
-    gasLimit: web3.utils.toHex(gasLimit),
+    gasPrice: web3.utils.toHex(Math.round(gasPrice * 1.2)),
+    gasLimit: web3.utils.toHex(Math.round(gasLimit * 1.5)),
     data: contract.methods.transfer(address, web3.utils.toHex(amount)).encodeABI(),
   };
 
