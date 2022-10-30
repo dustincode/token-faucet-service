@@ -1,11 +1,11 @@
 const Web3 = require('web3');
 const { Transaction } = require('@ethereumjs/tx');
-const { Chain, Common, Hardfork } = require('@ethereumjs/common');
+const { Common } = require('@ethereumjs/common');
 const BigNumber = require('bignumber.js');
 const TokenContractABI = require('./token.abi.json');
 const TokensContractAddress = require('./tokens.contract.json');
 
-const web3 = new Web3(new Web3.providers.HttpProvider(process.env.ETH_ENDPOINTS));
+const web3 = new Web3(new Web3.providers.HttpProvider(process.env.BSC_ENDPOINTS));
 
 const convertWeiToEther = (wei) => web3.utils.fromWei(wei, 'ether');
 
@@ -50,7 +50,7 @@ exports.faucet = async (token, network, address) => {
   };
 
   const privateKey = Buffer.from(process.env.OWNER_PRIVATE_KEY.replace('0x', ''), 'hex');
-  const common = new Common({ chain: Chain.Goerli, hardfork: Hardfork.London });
+  const common = Common.custom({ chainId: 97 });
   const transaction = new Transaction(rawTransaction, { common });
   const signedTransaction = transaction.sign(privateKey);
   const serializedTransaction = signedTransaction.serialize();
