@@ -19,6 +19,8 @@ router.get('/token-balance', async (req, res, next) => {
     const { token, network } = req.query;
     res.json({
       balance: await Erc20Service.getTokenBalance(token, network, process.env.OWNER_ADDRESS),
+      token,
+      network,
     });
   } catch (error) {
     next(error);
